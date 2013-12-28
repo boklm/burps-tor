@@ -1,0 +1,7 @@
+git_url: https://git.torproject.org/torbutton.git
+version: '[% c("abbrev") %]'
+var:
+  dest_filename: 'torbutton-[% c("version") %].xpi'
+targets:
+  dev:
+    git_hash: master
