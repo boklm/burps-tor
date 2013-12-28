@@ -1,0 +1,15 @@
+timestamp: 1
+var:
+  dest_filename: 'tbb-[% c("version") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar.xz'
+targets:
+  dev:
+    version: 1.0
+input_files:
+  - filename: '[% pc("tor", "var/dest_filename") %]'
+    name: tor
+    project: tor
+    pkg_type: build
+  - filename: '[% pc("torbutton", "var/dest_filename") %]'
+    name: torbutton
+    project: torbutton
+    pkg_type: build

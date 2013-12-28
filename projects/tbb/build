@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+rootdir="$(pwd)"
+mkdir -p dest/tor-browser_en-US
+cd dest/tor-browser_en-US
+tar xvf "$rootdir"/[% c('input_files_by_name/tor') %]
+mkdir -p Data/Browser/profile.default/extensions/
+mv "$rootdir"/[% c('input_files_by_name/torbutton') %] Data/Browser/profile.default/extensions/torbutton@torproject.org.xpi
+cd ..
+[% c('tar', {
+	tar_src => [ 'tor-browser_en-US' ],
+	tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename'),
+    }) %]
