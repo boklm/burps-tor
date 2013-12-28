@@ -27,5 +27,11 @@ do
   objcopy --add-gnu-debuglink="./Debug/Tor/$bn" "$i"
 done
 [% c('var/touch_directory', { directory => '.' }) %]
-[% c('tar') %] -cJf "[% dest_dir %]/[% c('var/dest_filename') %]" Data Tor
-[% c('tar') %] -cJf "[% dest_dir %]/[% c('var/dest_filename_debug') %]" Debug
+[% c('tar', {
+	tar_src => ['Data', 'tor'],
+	tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename'),
+	}) %]
+[% c('tar', {
+	tar_src => ['Debug'],
+	tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename_debug'),
+	}) %]

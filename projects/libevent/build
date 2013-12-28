@@ -12,4 +12,4 @@ make -j$(nproc)
 make install
 cd inst
 [% c('var/touch_directory', { directory => '.' }) %]
-[% c('tar') %] -cf "[% dest_dir %]/[% c('var/dest_filename') %]" libevent
+[% c('tar', { tar_src => 'libevent', tar_args => '-cf ' _ dest_dir _ '/' _ c('var/dest_filename') }) %]
