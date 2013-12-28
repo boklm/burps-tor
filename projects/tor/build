@@ -1,0 +1,31 @@
+[%- USE date -%]
+#!/bin/sh
+set -e
+[% c('var/reproducible_init') %]
+rootdir="$(pwd)"
+mkdir -p dest/Tor dest/Debug/Tor dest/Data/Tor
+tar xvf [% c('input_files_by_name/libevent') %]
+tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]
+cd [% project %]-[% c('version') %]
+INSTDIR=$(pwd)/build
+mkdir "$INSTDIR"
+./autogen.sh
+[% c('var/touch_directory', { directory => '.' }) %]
+./configure --disable-asciidoc --with-libevent-dir="$rootdir/libevent" \
+	    --prefix="$INSTDIR"
+make -j$(nproc)
+make install
+cd "$rootdir/dest"
+cp -p "$INSTDIR/share/tor/geoip" Data/Tor
+cp -p "$INSTDIR/bin/tor" Tor/
+cp -p "$rootdir/libevent/[% c('var/libevent_file') %]" Tor/
+for i in ./Tor/*
+do
+  bn=$(basename $i)
+  objcopy --only-keep-debug "$i" "./Debug/Tor/$bn"
+  strip "$i"
+  objcopy --add-gnu-debuglink="./Debug/Tor/$bn" "$i"
+done
+[% c('var/touch_directory', { directory => '.' }) %]
+[% c('tar') %] -cJf "[% dest_dir %]/[% c('var/dest_filename') %]" Data Tor
+[% c('tar') %] -cJf "[% dest_dir %]/[% c('var/dest_filename_debug') %]" Debug

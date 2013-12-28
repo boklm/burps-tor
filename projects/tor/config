@@ -1,0 +1,19 @@
+git_url: https://git.torproject.org/tor.git
+version_command: perl -ne 'if (m/^Changes in version ([^- ]+)[ -].*$/) { print "$1\n"; exit }' < ChangeLog
+var:
+  dest_filename: 'tor-[% c("abbrev") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
+  dest_filename_debug: 'tor-[% c("abbrev") %]-debug-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
+targets:
+  notarget: dev
+  dev:
+    git_hash: master
+    var:
+      libevent_file: lib/libevent-2.1.so.3.0.0
+  stable:
+    var:
+      libevent_file: lib/libevent-2.0.so.5
+input_files:
+  - filename: '[% pc("libevent", "var/dest_filename") %]'
+    name: libevent
+    project: libevent
+    pkg_type: build
