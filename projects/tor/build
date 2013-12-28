@@ -28,7 +28,7 @@ do
 done
 [% c('var/touch_directory', { directory => '.' }) %]
 [% c('tar', {
-	tar_src => ['Data', 'tor'],
+	tar_src => ['Data', 'Tor'],
 	tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename'),
 	}) %]
 [% c('tar', {
