@@ -1,0 +1,7 @@
+git_url: https://git.torproject.org/pluggable-transports/pyptlib.git
+version: '[% c("abbrev") %]'
+var:
+  dest_filename: 'pyptlib-[% c("version") %].tar'
+targets:
+  dev:
+    git_hash: master

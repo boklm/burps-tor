@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+[% c('var/reproducible_init') %]
+rootdir="$(pwd)"
+tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]
+cd [% project %]-[% c('version') %]
+[% c('var/touch_directory', { directory => '.' }) %]
+python setup.py build --build-lib build
+cd build
+[% c('tar', {
+	tar_src => 'pyptlib',
+	tar_args => '-cf ' _ dest_dir  _ '/' _ c('var/dest_filename'),
+    }) %]
