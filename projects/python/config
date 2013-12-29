@@ -1,0 +1,9 @@
+version: 2.7.5
+timestamp: 1
+var:
+  dest_filename: 'python-[% c("version") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar.xz'
+input_files:
+  - name: python
+    filename: 'Python-[% c("version") %].tar.bz2'
+    URL: 'http://www.python.org/ftp/python/[% c("version") %]/[% c("filename") %]'
+    sha256sum: 3b477554864e616a041ee4d7cef9849751770bc7c39adaf78a94ea145c488059
