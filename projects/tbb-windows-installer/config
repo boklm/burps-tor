@@ -1,0 +1,10 @@
+git_url: https://github.com/moba/tbb-windows-installer.git
+version: '[% c("abbrev") %]'
+var:
+  dest_filename: '[% project %]-[% c("version") %].tar.[% c("compress_tar") %]'
+targets:
+  notarget: stable
+  dev:
+    git_hash: master
+  stable:
+    git_hash: v0.1
