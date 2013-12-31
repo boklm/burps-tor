@@ -1,0 +1,52 @@
+#!/bin/sh
+set -e
+[% c('var/reproducible_init') %]
+rootdir="$(pwd)"
+
+[% IF c('var/link_yasm') %]
+mkdir bin
+ln -s /usr/bin/yasm-1 bin/yasm
+export PATH="$rootdir/bin:$PATH"
+[% END %]
+
+[% IF c('var/build_python') %]
+tar xvf [% c('input_files_by_name/python') %]
+export PATH="$rootdir/python/bin:$PATH"
+[% END %]
+
+tar xvf tor-browser-[% c('version') %].tar.[% c('compress_tar') %]
+cd tor-browser-[% c('version') %]
+
+[% c('var/touch_directory', { directory => '.' }) %]
+rm -f configure js/src/configure
+make -f client.mk configure
+[% c('var/touch_directory', { directory => '.' }) %]
+
+make -j$(nproc) -f client.mk configure
+
+make -j$(nproc) -f client.mk build
+make -j$(nproc) -C obj-* package INNER_MAKE_PACKAGE=true
+INSTDIR="$rootdir/inst"
+mkdir -p $INSTDIR/Browser/
+mkdir -p $INSTDIR/Debug/Browser/components
+cp -a obj-*/dist/firefox/* "$INSTDIR/Browser/"
+rm -f $INSTDIR/Browser/firefox-bin
+rm -f $INSTDIR/Browser/*.chk
+
+cd "$INSTDIR"
+for LIB in Browser/*.so Browser/webapprt-stub Browser/mozilla-xremote-client Browser/firefox Browser/plugin-container Browser/components/*.so # Browser/updater 
+do
+    objcopy --only-keep-debug $LIB Debug/$LIB
+    strip $LIB
+    objcopy --add-gnu-debuglink=./Debug/$LIB $LIB
+done
+
+[% c('var/rezip', { zip_file => 'Browser/omni.ja' }) %]
+[% c('var/rezip', { zip_file => 'Browser/webapprt/omni.ja' }) %]
+if [ -f Browser/browser/omni.ja ]; then
+    [% c('var/rezip', { zip_file => 'Browser/browser/omni.ja' }) %]
+fi
+
+[% c('tar', { tar_src => [ 'Browser' ], tar_args => '-cf ' _ dest_dir _ '/' _ c('var/dest_filename') }) %]
+[% c('tar', { tar_src => [ 'Debug' ], tar_args => '-cf ' _ dest_dir _ '/' _ c('var/dest_filename_debug') }) %]
+
