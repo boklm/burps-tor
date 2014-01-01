@@ -1,0 +1,9 @@
+git_url: https://git.torproject.org/https-everywhere.git
+version: '[% c("abbrev") %]'
+var:
+  dest_filename: '[% project %]-[% c("abbrev") %].xpi'
+targets:
+  dev:
+    git_hash: 3.4.4tbb
+  stable:
+    git_hash: 3.4.2

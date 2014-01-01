@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+[% c('var/reproducible_init') %]
+rootdir="$(pwd)"
+tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]
+cd [% project %]-[% c('version') %]
+./makexpi.sh
+mv -f pkg/[% project %]*.xpi [% project %].xpi
+[% c('rezip', { zip_file => project _ '.xpi' }) %]
+mv -f [% project %].xpi [% dest_dir %]/[% c('var/dest_filename') %]
