@@ -1,13 +1,26 @@
-timestamp: 1
+git_url: https://git.torproject.org/builders/tor-browser-bundle.git
 var:
   dest_filename: 'tbb-[% c("version") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar.xz'
 targets:
   dev:
+    git_hash: master
     version: 1.0
 input_files:
   - filename: '[% pc("tor", "var/dest_filename") %]'
     name: tor
     project: tor
+    pkg_type: build
+  - filename: '[% pc("tor-browser", "var/dest_filename") %]'
+    name: tor-browser
+    project: tor-browser
+    pkg_type: build
+  - filename: '[% pc("tor-launcher", "var/dest_filename") %]'
+    name: tor-launcher
+    project: tor-launcher
+    pkg_type: build
+  - filename: '[% pc("https-everywhere", "var/dest_filename") %]'
+    name: https-everywhere
+    project: https-everywhere
     pkg_type: build
   - filename: '[% pc("torbutton", "var/dest_filename") %]'
     name: torbutton

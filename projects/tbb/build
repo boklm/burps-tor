@@ -1,11 +1,29 @@
 #!/bin/sh
 set -e
 rootdir="$(pwd)"
-mkdir -p dest/tor-browser_en-US
-cd dest/tor-browser_en-US
+instdir="$rootdir/inst/tor-browser_en-US"
+mkdir -p "$instdir"
+
+tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]
+cd [% project %]-[% c('version') %]
+mv Bundle-Data/linux/Data "$instdir/Data"
+cp RelativeLink/RelativeLink.sh "$instdir/start-tor-browser"
+
+cd "$instdir"
+
 tar xvf "$rootdir"/[% c('input_files_by_name/tor') %]
+tar xvf "$rootdir"/[% c('input_files_by_name/tor-browser') %]
+
 mkdir -p Data/Browser/profile.default/extensions/
 mv "$rootdir"/[% c('input_files_by_name/torbutton') %] Data/Browser/profile.default/extensions/torbutton@torproject.org.xpi
+mv "$rootdir"/[% c('input_files_by_name/tor-launcher') %] Data/Browser/profile.default/extensions/tor-launcher@torproject.org.xpi
+
+httpseverywheredir='Data/Browser/profile.default/extensions/https-everywhere@eff.org'
+mkdir -p "$httpseverywheredir"
+pushd "$httpseverywheredir"
+unzip "$rootdir"/[% c('input_files_by_name/https-everywhere') %]
+popd
+
 cd ..
 [% c('tar', {
 	tar_src => [ 'tor-browser_en-US' ],
