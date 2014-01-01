@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+[% c('var/reproducible_init') %]
+rootdir="$(pwd)"
+tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]
+cd [% project %]-[% c('version') %]
+make package
+mv -f pkg/tor-launcher*.xpi tor-launcher.xpi
+[% c('rezip', { zip_file => 'tor-launcher.xpi' }) %]
+mv -f tor-launcher.xpi [% dest_dir %]/[% c('var/dest_filename') %]

@@ -1,0 +1,9 @@
+git_url: https://git.torproject.org/tor-launcher.git
+version: '[% c("abbrev") %]'
+var:
+  dest_filename: '[% project %]-[% c("abbrev") %].xpi'
+targets:
+  dev:
+    git_hash: master
+  stable:
+    git_hash: 0.2.3.2-rc
