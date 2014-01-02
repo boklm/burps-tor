@@ -4,7 +4,10 @@ var:
 targets:
   dev:
     git_hash: master
-    version: 1.0
+    version: x.dev
+  stable:
+    git_hash: master
+    version: x.stable
 input_files:
   - filename: '[% pc("tor", "var/dest_filename") %]'
     name: tor
