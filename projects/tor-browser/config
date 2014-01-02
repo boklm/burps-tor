@@ -4,10 +4,6 @@ var:
   dest_filename: 'tor-browser-[% c("abbrev") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
   dest_filename_debug: 'tor-browser-[% c("abbrev") %]-debug-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
 targets:
-  ubuntu-lucid:
-    var:
-      build_python: 1
-      link_yasm: 1
   dev:
     git_hash: tor-browser-24.2.0esr-1
   stable:
@@ -16,3 +12,10 @@ input_files:
   - filename: '[% pc("python", "var/dest_filename") %]'
     name: python
     enable: '[% c("build_python") %]'
+distributions:
+  - lsb_release:
+      id: Ubuntu
+      codename: lucid
+    var:
+      build_python: 1
+      link_yasm: 1
