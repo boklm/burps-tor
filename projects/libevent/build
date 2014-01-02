@@ -1,5 +1,5 @@
 [%- USE date -%]
-#!/bin/sh
+#!/bin/bash
 set -e
 [% c('var/reproducible_init') %]
 tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]

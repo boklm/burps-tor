@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 tar xvf torbutton-[% c('version') %].tar.[% c('compress_tar') %]
 cd torbutton-[% c('version') %]

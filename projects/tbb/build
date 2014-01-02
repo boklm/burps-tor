@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 rootdir="$(pwd)"
 instdir="$rootdir/inst/tor-browser_en-US"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 [% c('var/reproducible_init') %]
 rootdir="$(pwd)"
