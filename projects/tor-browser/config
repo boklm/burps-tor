@@ -5,9 +5,9 @@ var:
   dest_filename_debug: 'tor-browser-[% c("abbrev") %]-debug-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
 targets:
   dev:
-    git_hash: tor-browser-24.2.0esr-1
+    git_hash: tor-browser-24.2.0esr-3.5.1-build1
   stable:
-    git_hash: tor-browser-24.2.0esr-3.5rc1-build3
+    git_hash: tor-browser-24.2.0esr-3.5.1-build1
 input_files:
   - filename: '[% pc("python", "var/dest_filename") %]'
     name: python
