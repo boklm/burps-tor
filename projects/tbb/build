@@ -24,6 +24,12 @@ pushd "$httpseverywheredir"
 unzip "$rootdir"/[% c('input_files_by_name/https-everywhere') %]
 popd
 
+[% IF c('var/include_pt') %]
+pushd "$instdir/Tor"
+tar xvf "$rootdir"/[% c('input_files_by_name/pyptlib') %]
+popd
+[% END %]
+
 cd ..
 [% c('tar', {
 	tar_src => [ 'tor-browser_en-US' ],

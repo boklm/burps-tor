@@ -29,3 +29,8 @@ input_files:
     name: torbutton
     project: torbutton
     pkg_type: build
+  - filename: '[% pc("pyptlib", "var/dest_filename") %]'
+    name: pyptlib
+    project: pyptlib
+    pkg_type: build
+    enable: '[% c("var/include_pt") %]'
