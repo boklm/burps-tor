@@ -6,8 +6,10 @@ var:
 targets:
   dev:
     git_hash: tor-browser-24.2.0esr-3.5.1-build1
+    tag_gpg_id: 1
   stable:
     git_hash: tor-browser-24.2.0esr-3.5.1-build1
+    tag_gpg_id: 1
 input_files:
   - filename: '[% pc("python", "var/dest_filename") %]'
     name: python
