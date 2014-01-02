@@ -6,5 +6,6 @@ targets:
   notarget: dev
   stable:
     git_hash: release-2.0.21-stable
+    tag_gpg_id: 1
   dev:
     git_hash: master
