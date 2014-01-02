@@ -5,7 +5,7 @@ mkdir -p dest/python
 tar xvf [% c('input_files_by_name/python') %]
 cd Python-[% c('version') %]
 ./configure
-make -j$(nproc)
+make -l[% c('var/max_load') %] -j
 make prefix="$rootdir/dest/python" install
 cd "$rootdir/dest"
 [% c('tar', {

@@ -13,7 +13,7 @@ mkdir "$INSTDIR"
 [% c('var/touch_directory', { directory => '.' }) %]
 ./configure --disable-asciidoc --with-libevent-dir="$rootdir/libevent" \
 	    --prefix="$INSTDIR"
-make -j$(nproc)
+make -l[% c('var/max_load') %] -j
 make install
 cd "$rootdir/dest"
 cp -p "$INSTDIR/share/tor/geoip" Data/Tor

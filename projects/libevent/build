@@ -8,7 +8,7 @@ cd [% project %]-[% c('version') %]
 [% c('var/touch_directory', { directory => '.' }) %]
 mkdir -p inst/libevent
 ./configure --disable-static --prefix="$(pwd)/inst/libevent"
-make -j$(nproc)
+make -l[% c('var/max_load') %] -j
 make install
 cd inst
 [% c('var/touch_directory', { directory => '.' }) %]

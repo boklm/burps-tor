@@ -22,10 +22,10 @@ rm -f configure js/src/configure
 make -f client.mk configure
 [% c('var/touch_directory', { directory => '.' }) %]
 
-make -j$(nproc) -f client.mk configure
+make -l[% c('var/max_load') %] -j -f client.mk configure
 
-make -j$(nproc) -f client.mk build
-make -j$(nproc) -C obj-* package INNER_MAKE_PACKAGE=true
+make -l[% c('var/max_load') %] -j -f client.mk build
+make -l[% c('var/max_load') %] -j -C obj-* package INNER_MAKE_PACKAGE=true
 INSTDIR="$rootdir/inst"
 mkdir -p $INSTDIR/Browser/
 mkdir -p $INSTDIR/Debug/Browser/components
