@@ -13,7 +13,7 @@ targets:
 input_files:
   - filename: '[% pc("python", "var/dest_filename") %]'
     name: python
-    enable: '[% c("build_python") %]'
+    enable: '[% c("var/build_python") %]'
 distributions:
   - lsb_release:
       id: Ubuntu
