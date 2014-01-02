@@ -5,3 +5,5 @@ var:
 targets:
   dev:
     git_hash: master
+  stable:
+    git_hash: pyptlib-0.0.4
