@@ -7,3 +7,4 @@ targets:
     git_hash: master
   stable:
     git_hash: pyptlib-0.0.4
+    tag_gpg_id: 1
