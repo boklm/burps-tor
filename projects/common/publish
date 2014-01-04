@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+pubdir='[% c('var/publish_dir', {error_if_undef => 1}) %]/[% project %]/[% c('version') %]'
+mkdir -p "$pubdir"
+mv * "$pubdir"
+rm -f "$pubdir/build"
