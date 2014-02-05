@@ -3,6 +3,11 @@ version_command: perl -ne 'if (m/^Changes in version ([^- ]+)[ -].*$/) { print "
 var:
   dest_filename: 'tor-[% c("abbrev") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
   dest_filename_debug: 'tor-[% c("abbrev") %]-debug-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
+  build_deps:
+   - autoconf
+   - automake
+   - autoconf2.13
+   - libtool
 targets:
   notarget: dev
   dev:
