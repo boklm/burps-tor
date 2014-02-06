@@ -8,6 +8,7 @@ var:
    - automake
    - autoconf2.13
    - libtool
+   - zlib1g-dev
 targets:
   notarget: dev
   dev:
