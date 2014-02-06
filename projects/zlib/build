@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+[% c('var/reproducible_init') %]
+[% IF c('var/windows') -%]
+export CFLAGS=-mwindows
+export LDFLAGS=-mwindows
+[% END -%]
+[% pc('binutils', 'var/setup') -%]
+INSTDIR="$PWD/inst"
+mkdir -p "$INSTDIR"
+tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]
+cd [% project %]-[% c('version') %]
+[% c('var/touch_directory', { directory => '.' }) %]
+make BINARY_PATH=$INSTDIR/zlib/lib INCLUDE_PATH=$INSTDIR/zlib/include \
+     LIBRARY_PATH=$INSTDIR/zlib/lib -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- \
+     [% c('var/make_opts') %] SHARED_MODE=1
+make BINARY_PATH=$INSTDIR/zlib/lib INCLUDE_PATH=$INSTDIR/zlib/include \
+     LIBRARY_PATH=$INSTDIR/zlib/lib -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- \
+     [% c('var/make_opts') %] SHARED_MODE=1 install
+cd "$INSTDIR"
+[% c('tar', {
+        tar_src => ['zlib'],
+        tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename'),
+    }) %]
