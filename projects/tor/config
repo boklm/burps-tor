@@ -1,8 +1,8 @@
 git_url: https://git.torproject.org/tor.git
 version_command: perl -ne 'if (m/^Changes in version ([^- ]+)[ -].*$/) { print "$1\n"; exit }' < ChangeLog
 var:
-  dest_filename: 'tor-[% c("abbrev") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
-  dest_filename_debug: 'tor-[% c("abbrev") %]-debug-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
+  dest_filename: 'tor-[% c("abbrev") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %]-[% c("var/target_os") %].tar'
+  dest_filename_debug: 'tor-[% c("abbrev") %]-debug-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %]-[% c("var/target_os") %].tar'
   build_deps:
    - autoconf
    - automake
@@ -18,7 +18,17 @@ targets:
     var:
       libevent_file: lib/libevent-2.0.so.5
 input_files:
+  - var/common_input_files/binutils
   - filename: '[% pc("libevent", "var/dest_filename") %]'
     name: libevent
     project: libevent
+    pkg_type: build
+  - filename: '[% pc("openssl", "var/dest_filename") %]'
+    name: openssl
+    project: openssl
+    pkg_type: build
+  - enable: '[% c("var/windows") %]'
+    filename: '[% pc("zlib", "var/dest_filename") %]'
+    name: zlib
+    project: zlib
     pkg_type: build

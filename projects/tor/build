@@ -5,6 +5,10 @@ set -e
 rootdir="$(pwd)"
 mkdir -p dest/Tor dest/Debug/Tor dest/Data/Tor
 tar xvf [% c('input_files_by_name/libevent') %]
+tar xvf [% c('input_files_by_name/openssl') %]
+[% IF c('var/windows') -%]
+tar xvf [% c('input_files_by_name/zlib') %]
+[% END -%]
 tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]
 cd [% project %]-[% c('version') %]
 INSTDIR=$(pwd)/build
@@ -12,26 +16,42 @@ mkdir "$INSTDIR"
 ./autogen.sh
 [% c('var/touch_directory', { directory => '.' }) %]
 ./configure --disable-asciidoc --with-libevent-dir="$rootdir/libevent" \
-	    --prefix="$INSTDIR"
+            --with-openssl-dir="$rootdir/openssl" \
+            [% IF c('var/windows') %]--with-zlib-dir="$rootdir/zlib"[% END %] \
+            [% c('var/configure_host') %] --prefix="$INSTDIR"
 make -l[% c('var/max_load') %] -j
 make install
 cd "$rootdir/dest"
 cp -p "$INSTDIR/share/tor/geoip" Data/Tor
-cp -p "$INSTDIR/bin/tor" Tor/
-cp -p "$rootdir/libevent/[% c('var/libevent_file') %]" Tor/
-for i in ./Tor/*
-do
-  bn=$(basename $i)
-  objcopy --only-keep-debug "$i" "./Debug/Tor/$bn"
-  strip "$i"
-  objcopy --add-gnu-debuglink="./Debug/Tor/$bn" "$i"
-done
+
+[% IF c('var/windows') -%]
+   cp "$rootdir"/libevent/bin/*.dll Tor/
+   cp "$rootdir"/openssl/bin/*.dll Tor/
+   cp "$rootdir"/zlib/lib/*.dll Tor/
+   cp -a /usr/lib/gcc/i686-w64-mingw32/4.6/libgcc_s_sjlj-1.dll Tor/
+   cp -a /usr/lib/gcc/i686-w64-mingw32/4.6/libssp*.dll Tor/
+[% ELSE -%]
+   cp -p "$INSTDIR/bin/tor" Tor/
+   cp -p "$rootdir/libevent/[% c('var/libevent_file') %]" Tor/
+   cp -p "$rootdir/openssl/lib/libssl.so.1.0.0" \
+         "$rootdir/openssl/lib/libcrypto.so.1.0.0" Tor/
+   for i in ./Tor/*
+   do
+     bn=$(basename $i)
+     objcopy --only-keep-debug "$i" "./Debug/Tor/$bn"
+     strip "$i"
+     objcopy --add-gnu-debuglink="./Debug/Tor/$bn" "$i"
+   done
+[% END %]
+
 [% c('var/touch_directory', { directory => '.' }) %]
 [% c('tar', {
 	tar_src => ['Data', 'Tor'],
 	tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename'),
 	}) %]
-[% c('tar', {
+[% IF c('var/linux');
+   GET c('tar', {
 	tar_src => ['Debug'],
 	tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename_debug'),
-	}) %]
+	});
+   END -%]
