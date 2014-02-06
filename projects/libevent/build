@@ -2,12 +2,13 @@
 #!/bin/bash
 set -e
 [% c('var/reproducible_init') %]
+[% pc('binutils', 'var/setup') -%]
 tar xvf [% project %]-[% c('version') %].tar.[% c('compress_tar') %]
 cd [% project %]-[% c('version') %]
 ./autogen.sh
 [% c('var/touch_directory', { directory => '.' }) %]
 mkdir -p inst/libevent
-./configure --disable-static --prefix="$(pwd)/inst/libevent"
+./configure --disable-static --prefix="$(pwd)/inst/libevent" [% c('var/configure_host') %]
 make -l[% c('var/max_load') %] -j
 make install
 cd inst

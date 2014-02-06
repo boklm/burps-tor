@@ -1,7 +1,7 @@
 git_url: https://github.com/libevent/libevent.git
 version: '[% c("abbrev") %]'
 var:
-  dest_filename: 'libevent-[% c("version") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %].tar'
+  dest_filename: 'libevent-[% c("version") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %]-[% c("var/target_os") %].tar'
   build_deps:
    - autoconf
    - automake
@@ -14,3 +14,5 @@ targets:
     tag_gpg_id: 1
   dev:
     git_hash: master
+input_files:
+  - var/common_input_files/binutils
