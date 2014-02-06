@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+[% c('var/reproducible_init') %]
+rootdir="$(pwd)"
+INSTDIR="$rootdir/inst"
+[% pc('binutils', 'var/setup') -%]
+tar xvf [% c('input_files_by_name/openssl') %]
+cd [% project %]-[% c('version') %]
+[% c('var/touch_directory', { directory => '.' }) %]
+[% IF c('var/target_os') == 'win32' -%]
+./Configure -shared --cross-compile-prefix=i686-w64-mingw32- mingw --prefix=$INSTDIR/openssl #enable-ec_nistp_64_gcc_128
+[% ELSE -%]
+./config -shared --prefix=$INSTDIR/openssl #enable-ec_nistp_64_gcc_128
+[% END -%]
+make
+make install
+cd "$INSTDIR"
+[% c('tar', {
+	tar_src => ['openssl'],
+	tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename'),
+	}) %]

@@ -1,0 +1,10 @@
+version: 1.0.1f
+timestap: 0
+var:
+  dest_filename: '[% project %]-[% c("version") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %]-[% c("var/target_os") %].tar.xz'
+input_files:
+  - filename: 'openssl-[% c("version") %].tar.gz'
+    name: openssl
+    URL: 'https://www.openssl.org/source/[% c("filename") %]'
+    sha256sum: 6cc2a80b17d64de6b7bac985745fdaba971d54ffd7d38d3556f998d7c0c9cb5a
+  - var/common_input_files/binutils
