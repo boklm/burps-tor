@@ -1,0 +1,15 @@
+version: 2.22
+timestamp: 0
+var:
+  dest_filename: 'binutils-[% c("version") %]-[% c("lsb_release/id") %]-[% c("lsb_release/release") %]-[% c("arch") %]-[% c("var/target_os") %].tar.xz'
+  setup: |
+   [% IF c('windows') -%]
+   tar xvf [% c('var/dest_filename') %]
+   export PATH="$PWD/binutils/usr/bin/:$PATH"
+   [% END -%]
+input_files:
+  - name: binutils
+    filename: 'binutils-[% c("version") %].tar.bz2'
+    URL: 'https://ftp.gnu.org/gnu/binutils/[% c("filename") %]'
+    file_gpg_id: 1
+    sig_ext: sig

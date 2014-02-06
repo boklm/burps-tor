@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+rootdir=$(pwd)
+mkdir -p dest/binutils
+tar xvf [% c('input_files_by_name/binutils') %]
+cd binutils-[% c('version') %]
+sed 's/= extern_rt_rel_d;/= extern_rt_rel_d;\n  memset (extern_rt_rel_d, 0, PE_IDATA5_SIZE);/' -i ld/pe-dll.c
+./configure --prefix=/usr --disable-multilib [% c('var/configure_target') %]
+make -l[% c('var/max_load') %] -j
+make DESTDIR="$rootdir/dest/binutils" install
+cd "$rootdir/dest"
+[% c('tar', {
+	tar_src => 'binutils',
+	tar_args => '-cJf ' _ dest_dir _ '/' _ c('var/dest_filename'),
+    }) %]
